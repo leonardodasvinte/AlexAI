@@ -1,4 +1,4 @@
-import logging
+safimport logging
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -36,7 +36,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_2, 'rb'))
 
     # 3. Mensagem de boas-vindas + botões só depois das imagens
-    texto_boas = "Bem-vindo! Aqui tem uma surpresa perfeita pra você 🔥"
+    texto_boas = "Bem-vindo! Aqui tem uma surpresa safada pra você 🔥"
 
     keyboard = [
         [InlineKeyboardButton("Quer ver mais brindes?", callback_data='mais_brindes')],
@@ -102,3 +102,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
