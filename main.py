@@ -1,5 +1,5 @@
 import logging
-import os  # Import necessário para os.environ
+import os
 from flask import Flask, request
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
@@ -11,15 +11,12 @@ from telegram.ext import (
     ContextTypes
 )
 
-# Config logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Token e link
 TOKEN = '8222338658:AAEfZx1O19Q-uvCed4jy4gH2-lMspiVylng'
 TRIBO_PAY_LINK = 'https://global.tribopay.com.br/k08occpgzo'
 
-# Arquivos (coloque na raiz do repo no GitHub)
 GIF_INICIAL = 'surpresa.gif'
 FOTO_BOAS_VINDAS_1 = 'boas_vindas_1.png'
 FOTO_BOAS_VINDAS_2 = 'boas_vindas_2.png'
@@ -28,24 +25,13 @@ FOTO_TEASER_2 = 'foto_teaser_2.png'
 
 app = Flask(__name__)
 
-# Inicializa o bot uma vez
-application = Application.builder().token(TOKEN).build()
-
-application.add_handler(CommandHandler("start", start))
-application.add_handler(CallbackQueryHandler(button))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
 
-    # 1. GIF inicial
     await context.bot.send_animation(chat_id=chat_id, animation=open(GIF_INICIAL, 'rb'))
-
-    # 2. Duas imagens de boas-vindas
     await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_1, 'rb'))
     await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_2, 'rb'))
 
-    # 3. Mensagem + botões só depois das imagens
     texto_boas = "Oláááá! Aqui tenho a surpresa especial pra você 🔥"
     keyboard = [
         [InlineKeyboardButton("Quer ver mais brindes?", callback_data='mais_brindes')],
@@ -91,19 +77,27 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Use /start pra começar! 🔥")
 
+# Inicialização do bot
+application = Application.builder().token(TOKEN).build()
+application.add_handler(CommandHandler("start", start))
+application.add_handler(CallbackQueryHandler(button))
+application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    update = Update.de_json(request.get_json(force=True), application.bot)
+    application.process_update(update)
+    return 'OK', 200
+
+@app.route('/')
+def home():
+    return "Bot is running!"
+
 if __name__ == '__main__':
-    # Set webhook (rode uma vez ou manualmente)
     webhook_url = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}/webhook"
     logger.info(f"Setting webhook to: {webhook_url}")
     import asyncio
     asyncio.run(application.bot.set_webhook(url=webhook_url))
 
-    # Rode o Flask na porta do Render
     port = int(os.environ.get("PORT", 10000))
-    app.route('/webhook', methods=['POST'])
-    def webhook():
-        update = Update.de_json(request.get_json(force=True), application.bot)
-        application.process_update(update)
-        return 'OK', 200
-
     app.run(host='0.0.0.0', port=port)
