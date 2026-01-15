@@ -101,7 +101,12 @@ def main():
     application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
-    init_bot()  # Inicializa o bot
+    # Inicializa o bot diretamente (sem função separada)
+    application = Application.builder().token(TOKEN).build()
+
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(button))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
     # Set webhook (rode uma vez ou manualmente)
     webhook_url = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}/webhook"
@@ -110,7 +115,7 @@ if __name__ == '__main__':
     asyncio.run(application.bot.set_webhook(url=webhook_url))
 
     # Rode o Flask na porta do Render
-    port = int(os.environ.get("PORT", 10000))  # Render define PORT automaticamente
+    port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
 
 
