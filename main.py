@@ -1,6 +1,4 @@
 import logging
-import os
-from flask import Flask, request
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -17,26 +15,28 @@ logger = logging.getLogger(__name__)
 TOKEN = '8222338658:AAEfZx1O19Q-uvCed4jy4gH2-lMspiVylng'
 TRIBO_PAY_LINK = 'https://global.tribopay.com.br/k08occpgzo'
 
-# Arquivos (exatamente como no repo GitHub - ajuste se precisar)
+# Arquivos (exatamente como no GitHub - ajuste nomes se necessário)
 GIF_INICIAL = 'surpresa.gif'
 FOTO_BOAS_VINDAS_1 = 'boas_vindas_1.png'
 FOTO_BOAS_VINDAS_2 = 'boas_vindas_2.png'
 FOTO_TEASER_1 = 'foto_teaser_1.png'
 FOTO_TEASER_2 = 'foto_teaser_2.png'
 
-app = Flask(__name__)
-
-application = Application.builder().token(TOKEN).build()
-
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
 
     # 1. GIF inicial
-    await context.bot.send_animation(chat_id=chat_id, animation=open(GIF_INICIAL, 'rb'))
+    try:
+        await context.bot.send_animation(chat_id=chat_id, animation=open(GIF_INICIAL, 'rb'))
+    except Exception as e:
+        logger.error(f"Erro no GIF: {e}")
 
     # 2. Duas imagens de boas-vindas
-    await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_1, 'rb'))
-    await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_2, 'rb'))
+    try:
+        await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_1, 'rb'))
+        await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_BOAS_VINDAS_2, 'rb'))
+    except Exception as e:
+        logger.error(f"Erro nas fotos boas-vindas: {e}")
 
     # 3. Mensagem + botões
     texto_boas = "Oláááá! Aqui tenho a surpresa especial pra você 🔥"
@@ -55,7 +55,10 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if query.data == 'mais_brindes':
         texto1 = "São coisas assim que você quer ver? 😏"
         await context.bot.send_message(chat_id=chat_id, text=texto1)
-        await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_TEASER_1, 'rb'))
+        try:
+            await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_TEASER_1, 'rb'))
+        except Exception as e:
+            logger.error(f"Erro na foto teaser 1: {e}")
 
         keyboard = [
             [InlineKeyboardButton("Mais brindes", callback_data='mais_brindes_2')],
@@ -66,7 +69,10 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == 'mais_brindes_2':
         texto2 = "Então toma..."
         await context.bot.send_message(chat_id=chat_id, text=texto2)
-        await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_TEASER_2, 'rb'))
+        try:
+            await context.bot.send_photo(chat_id=chat_id, photo=open(FOTO_TEASER_2, 'rb'))
+        except Exception as e:
+            logger.error(f"Erro na foto teaser 2: {e}")
 
         keyboard_final = [
             [InlineKeyboardButton("Mais um, quero te ajudar", url=TRIBO_PAY_LINK)]
@@ -76,26 +82,15 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def echo(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Use /start pra começar! 🔥")
 
-# Adiciona handlers
-application.add_handler(CommandHandler("start", start))
-application.add_handler(CallbackQueryHandler(button))
-application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
+def main():
+    application = Application.builder().token(TOKEN).build()
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    update = Update.de_json(request.get_json(force=True), application.bot)
-    application.process_update(update)
-    return 'OK', 200
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(button))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, echo))
 
-@app.route('/')
-def home():
-    return "Bot is running!"
+    logger.info("Bot iniciado! Enviando /start pra testar.")
+    application.run_polling(allowed_updates=Update.ALL_TYPES)
 
 if __name__ == '__main__':
-    webhook_url = f"https://{os.environ.get('RENDER_EXTERNAL_HOSTNAME')}/webhook"
-    logger.info(f"Setting webhook to: {webhook_url}")
-    import asyncio
-    asyncio.run(application.bot.set_webhook(url=webhook_url))
-
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
+    main()
