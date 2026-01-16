@@ -13,7 +13,7 @@ from telegram.ext import (
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-TOKEN = os.environ.get("TELEGRAM TOKEN")  # setar no Render
+TOKEN = os.environ.get("TOKEN")  # setar no Render
 TRIBO_PAY_LINK = "https://global.tribopay.com.br/k08occpgzo"
 
 GIF_INICIAL = "surpresa.gif"
@@ -102,4 +102,5 @@ if __name__ == "__main__":
     setup_webhook()
     port = int(os.environ.get("PORT", "10000"))
     app.run(host="0.0.0.0", port=port)
+
 
