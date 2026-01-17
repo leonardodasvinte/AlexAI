@@ -114,18 +114,30 @@ def health_root():
     return "OK", 200
 
 # Webhook do Telegram (POST)
+import traceback
+
 @app.post("/webhook")
 def telegram_webhook():
-    # Proteção opcional por header (se você quiser usar)
-    if WEBHOOK_SECRET:
-        secret = request.headers.get("X-Webhook-Secret", "")
-        if secret != WEBHOOK_SECRET:
-            return "Unauthorized", 401
+    try:
+        # Proteção opcional (pode deixar)
+        if WEBHOOK_SECRET:
+            secret = request.headers.get("X-Webhook-Secret", "")
+            if secret != WEBHOOK_SECRET:
+                return "Unauthorized", 401
 
-    payload = request.get_json(force=True, silent=True) or {}
-    update = Update.de_json(payload, tg_app.bot)
-    loop.run_until_complete(tg_app.process_update(update))
-    return "OK", 200
+        payload = request.get_json(force=True, silent=True)
+        if not isinstance(payload, dict):
+            print("WEBHOOK ERROR: Payload inválido:", payload)
+            return "Bad Request", 400
+
+        update = Update.de_json(payload, tg_app.bot)
+        loop.run_until_complete(tg_app.process_update(update))
+        return "OK", 200
+
+    except Exception as e:
+        print("WEBHOOK ERROR:", repr(e))
+        print(traceback.format_exc())
+        return "Internal Server Error", 500
 
 # Endpoint para setar webhook (aceita GET e POST pra evitar 405 no Render)
 @app.route("/set-webhook", methods=["GET", "POST"], endpoint="set_webhook_route")
@@ -143,3 +155,4 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "10000"))
     app.run(host="0.0.0.0", port=port)
+
