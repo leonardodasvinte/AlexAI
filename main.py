@@ -104,6 +104,9 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 tg_app.add_handler(CommandHandler("start", start_cmd))
 tg_app.add_handler(CallbackQueryHandler(on_click))
 
+loop.run_until_complete(tg_app.initialize())
+loop.run_until_complete(tg_app.start())
+
 # ======================
 # FLASK ROUTES
 # ======================
@@ -155,4 +158,5 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "10000"))
     app.run(host="0.0.0.0", port=port)
+
 
