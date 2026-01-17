@@ -82,11 +82,6 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 tg_app.add_handler(CommandHandler("start", start))
 tg_app.add_handler(CallbackQueryHandler(on_click))
 
-# ====== FLASK WEBHOOK ======
-@app.get("/")
-def health():
-    return "OK", 200
-
 import os
 import asyncio
 from flask import Flask, request
@@ -121,4 +116,5 @@ def set_webhook():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", "10000")))
+
 
