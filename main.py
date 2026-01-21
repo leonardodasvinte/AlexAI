@@ -5,9 +5,9 @@ from flask import Flask, request
 import asyncio
 
 # URLs das imagens no GitHub RAW
-IMG_Q1 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/boas_vindas_1.png"
-IMG_Q2 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/boas_vindas_2.png"
-IMG_Q3 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/foto_teaser_1.png"
+IMG_Q1 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/ComfyUI_00010_editsmagics.png"
+IMG_Q2 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/ComfyUI_00734_.png"
+IMG_Q3 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/ComfyUI_00750_.png"
 
 # URL de pagamento (exemplo, ajuste para sua URL)
 PAY_URL = "https://global.tribopay.com.br/k08occpgzo"
@@ -22,10 +22,10 @@ asyncio.set_event_loop(loop)
 # Handlers do bot
 async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
-        "Sem enrolação. Em poucos passos você escolhe e libera o acesso. 👇",
+        "Vou te dar um gostinho👅💦... mas se quiser já pode pegar",
         reply_markup=InlineKeyboardMarkup([
-            [InlineKeyboardButton("✅ Começar", callback_data="Q1")],
-            [InlineKeyboardButton("💳 Pagar agora", url=PAY_URL)],
+            [InlineKeyboardButton("Quero um gostinho😈", callback_data="Q1")],
+            [InlineKeyboardButton("Pegar agora!", url=PAY_URL)],
         ])
     )
 
@@ -45,10 +45,10 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q1)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Pergunta 1/3: Você prefere algo mais direto ou com mais narrativa?",
+            text="Isso aqui tá te agradando?",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("⚡ Direto", callback_data="Q2")],
-                [InlineKeyboardButton("💳 Pagar agora", url=PAY_URL)],
+                [InlineKeyboardButton("Ainda pode mais um pouquinho", callback_data="Q2")],
+                [InlineKeyboardButton("Pegar, pegar!", url=PAY_URL)],
             ])
         )
 
@@ -56,10 +56,10 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q2)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Pergunta 2/3: Você prefere receber em pacotes ou assinatura?",
+            text="Que delícia safado, é assim que eu gosto 😈",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("📦 Pacotes", callback_data="Q3")],
-                [InlineKeyboardButton("💳 Pagar agora", url=PAY_URL)],
+                [InlineKeyboardButton("Mais uma coisinha🤪... rsrs👄🫦", callback_data="Q3")],
+                [InlineKeyboardButton("Pegar!🔥", url=PAY_URL)],
             ])
         )
 
@@ -67,9 +67,9 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q3)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Pergunta 3/3: Último passo para liberar o acesso:",
+            text="Estou pensando em fazer uma supresa pra quem pegar 💋",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔒 Liberar acesso (Pagamento)", url=PAY_URL)]
+                [InlineKeyboardButton("Pegar!!🔥🔥🔥", url=PAY_URL)]
             ])
         )
 
@@ -114,6 +114,7 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
 
 
 
