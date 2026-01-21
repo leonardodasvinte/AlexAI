@@ -10,7 +10,7 @@ IMG_Q2 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/ComfyUI
 IMG_Q3 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/ComfyUI_00750_.png"
 
 # URL de pagamento (exemplo, ajuste para sua URL)
-PAY_URL = "https://global.tribopay.com.br/k08occpgzo"
+PAY_URL = "https://global.tribopay.com.br/xifv8qvubx"
 
 # Inicializa o bot e Flask
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -114,6 +114,7 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
 
 
 
