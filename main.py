@@ -12,7 +12,7 @@ IMG_Q3 = "https://raw.githubusercontent.com/SEU_USER/SEU_REPO/main/assets/q3.jpg
 PAY_URL = "https://global.tribopay.com.br/k08occpgzo"
 
 # Inicializa o bot e Flask
-BOT_TOKEN = "SEU_BOT_TOKEN_AQUI"
+BOT_TOKEN = "BOT_TOKEN"
 app = Flask(__name__)
 tg_app = Application.builder().token(BOT_TOKEN).build()
 loop = asyncio.new_event_loop()
@@ -113,3 +113,4 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
