@@ -5,9 +5,9 @@ from flask import Flask, request
 import asyncio
 
 # URLs das imagens no GitHub RAW
-IMG_Q1 = "https://raw.githubusercontent.com/SEU_USER/SEU_REPO/main/assets/q1.jpg"
-IMG_Q2 = "https://raw.githubusercontent.com/SEU_USER/SEU_REPO/main/assets/q2.jpg"
-IMG_Q3 = "https://raw.githubusercontent.com/SEU_USER/SEU_REPO/main/assets/q3.jpg"
+IMG_Q1 = "https://github.com/leonardodasvinte/AlexAI/blob/main/boas_vindas_1.png"
+IMG_Q2 = "https://github.com/leonardodasvinte/AlexAI/blob/main/boas_vindas_2.png"
+IMG_Q3 = "https://github.com/leonardodasvinte/AlexAI/blob/main/foto_teaser_1.png"
 
 # URL de pagamento (exemplo, ajuste para sua URL)
 PAY_URL = "https://global.tribopay.com.br/k08occpgzo"
@@ -114,5 +114,6 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
 
 
