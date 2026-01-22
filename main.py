@@ -35,10 +35,10 @@ asyncio.set_event_loop(loop)
 # Handlers do bot
 async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     await update.message.reply_text(
-        "Vou te dar um gostinho👅💦... mas se quiser já pode pegar",
+        "Vou te dar um gostinho👅💦... mas se quiser já pode pegar. São 2 opções diferentes pra você pegar as 2 😍",
         reply_markup=InlineKeyboardMarkup([
             [InlineKeyboardButton("Quero um gostinho😈", callback_data="Q1")],
-            [InlineKeyboardButton("Pegar agora!", url=PAY_URL)],
+            [InlineKeyboardButton("Pegar agora!", url=PAY_URL_1)],
         ])
     )
 
@@ -58,10 +58,11 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q1)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Isso aqui tá te agradando?",
+            text="Isso aqui tá te agradando? São 2 opções diferentes pra você pegar as 2 😍",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("Ainda pode mais um pouquinho", callback_data="Q2")],
-                [InlineKeyboardButton("Pegar, pegar!", url=PAY_URL)],
+                [InlineKeyboardButton("Pegar, pegar!", url=PAY_URL_1)],
+                [InlineKeyboardButton("Pegar, pegar! 2 ", url=PAY_URL_2)],
             ])
         )
 
@@ -69,10 +70,11 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q2)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Que delícia safado, é assim que eu gosto 😈",
+            text="Que delícia safado, é assim que eu gosto 😈. São 2 opções diferentes pra você pegar as 2 😍",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("Mais uma coisinha🤪... rsrs👄🫦", callback_data="Q3")],
-                [InlineKeyboardButton("Pegar!🔥", url=PAY_URL)],
+                [InlineKeyboardButton("Pegar!🔥", url=PAY_URL_1)],
+                [InlineKeyboardButton("Pegar 2 !🔥", url=PAY_URL_2)],
             ])
         )
 
@@ -80,9 +82,10 @@ async def on_click(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await context.bot.send_photo(chat_id=chat_id, photo=IMG_Q3)
         await context.bot.send_message(
             chat_id=chat_id,
-            text="Estou pensando em fazer uma supresa pra quem pegar 💋",
+            text="Estou pensando em fazer uma supresa pra quem pegar 💋. São 2 opções diferentes pra você pegar as 2 😍",
             reply_markup=InlineKeyboardMarkup([
-                [InlineKeyboardButton("Pegar!!🔥🔥🔥", url=PAY_URL)]
+                [InlineKeyboardButton("Pegar!!🔥🔥🔥", url=PAY_URL_1)],
+                [InlineKeyboardButton("Pegar   2   !!🔥🔥🔥", url=PAY_URL_2)]
             ])
         )
 
@@ -127,6 +130,7 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
 
 
 
