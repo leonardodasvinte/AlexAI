@@ -10,7 +10,20 @@ IMG_Q2 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/bolo3.j
 IMG_Q3 = "https://raw.githubusercontent.com/leonardodasvinte/AlexAI/main/bolo4.jpeg"
 
 # URL de pagamento (exemplo, ajuste para sua URL)
-PAY_URL = "https://global.tribopay.com.br/xifv8qvubx"
+PAY_URL_1 = "https://global.tribopay.com.br/xifv8qvubx"
+PAY_URL_2 = "https://global.tribopay.com.br/tr4wkh6pt5"
+
+def kb_start():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("➡️ Escolher Pack 1", callback_data="CHOOSE_P1")],
+        [InlineKeyboardButton("➡️ Escolher Pack 2", callback_data="CHOOSE_P2")],
+    ])
+
+def kb_both_packs():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔥 Pack 1", url=PAY_URL_1)],
+        [InlineKeyboardButton("⚡ Pack 2", url=PAY_URL_2)],
+    ])
 
 # Inicializa o bot e Flask
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -114,6 +127,7 @@ def set_webhook_route():
 if __name__ == "__main__":
     port = int("10000")  # ou use os.getenv("PORT")
     app.run(host="0.0.0.0", port=port)
+
 
 
 
